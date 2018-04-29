@@ -8,12 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 using netcore.webapi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace netcore.webapi.Controllers
 {
     [Route("api/[controller]")]
     public class CardsController : Controller
     {
+        private IConfiguration _configuration;
+
+        public CardsController(IConfiguration configuration)
+        {
+            _configuration=configuration;
+        }
+
         [HttpGet("Random")]
         public async Task<IActionResult> GetRandomCardAsync()
         {
@@ -22,7 +30,8 @@ namespace netcore.webapi.Controllers
 
             var card = new Card();
             var client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.magicthegathering.io/v1/cards/");
+            var apiUrl = _configuration?.GetSection("MySettings")?.GetSection("ApiURL")?.Value;
+            client.BaseAddress = new Uri(apiUrl+"cards/");
             client.DefaultRequestHeaders.Accept.Clear();
             var response = await client.GetAsync(randomId.ToString());
             if (response.IsSuccessStatusCode)
@@ -40,7 +49,8 @@ namespace netcore.webapi.Controllers
         {
             var card = new Card();
             var client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.magicthegathering.io/v1/");
+            var apiUrl = _configuration?.GetSection("MySettings")?.GetSection("ApiURL")?.Value;
+            client.BaseAddress = new Uri(apiUrl);
             client.DefaultRequestHeaders.Accept.Clear();
             var response = await client.GetAsync("cards?name=" + name);
             if (response.IsSuccessStatusCode)

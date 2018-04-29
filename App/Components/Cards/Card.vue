@@ -13,8 +13,7 @@
       </div>
       <div class="col-lg-6">
         <dl>
-          <dt>Mana</dt>
-          <!-- v-bind:class="{la forma en la que obtenga el color}" -->
+          <dt>Mana</dt>          
           <dl>
             <i v-for="(cost, index) in splitManaCost" :key="index" v-bind:class="'ms-' + cost" class="ms"></i>
           </dl>          
@@ -36,8 +35,7 @@
 </template>
 
 <script>
-    export default {
-        props: ['card'],
+    export default {        
         computed:{
           splitManaCost: function(){
             //fix regex
@@ -45,6 +43,9 @@
               return this.card.manaCost.split(/[{}]/).filter(String);
             else
               return new Array();
+          },
+          card(){
+            return this.$store.getters.getCardVuex;
           }
         }
     };

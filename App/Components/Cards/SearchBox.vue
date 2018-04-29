@@ -37,8 +37,8 @@
               this.searchText = '';
               ApiMethods
                 .getApi('/api/Cards/Random')
-                .then((data) => {                                        
-                    this.$emit('selectCard', data);
+                .then((data) => {
+                    this.$store.commit('selectCardVuex', data);
                 });
             },
             searchCard: function(){
@@ -49,11 +49,11 @@
                   .then((data) => {
                     if(data==null)
                       alert('Card not found');
-                    this.$emit('selectCard', data);
+                    this.$store.commit('selectCardVuex', data);
                   });
               }else{
                 this.searchText='';                
-                this.$emit('selectCard', null);
+                this.$store.commit('selectCardVuex', data);
               }
             }
         },
