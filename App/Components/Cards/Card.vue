@@ -24,7 +24,9 @@
           <template v-if="card.power">
             <dt>Power/Toughness</dt>
             <dl>{{card.power}}/{{card.toughness}}</dl>
-          </template>          
+          </template>
+          <dt>Card Text:</dt>
+          <dl class="font-bold-light">{{ card.text | truncate(150) }}</dl>
         </dl>
       </div>      
     </div>  
@@ -46,6 +48,11 @@
           },
           card(){
             return this.$store.getters.getCardVuex;
+          }
+        },
+        filters:{
+          truncate(text, top){
+            return text.slice(0, top) + (top < text.length ? '...' : '');
           }
         }
     };
