@@ -6,13 +6,17 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     //variables
     state: {
-        cardVuex:null
+        cardVuex:null,
+        isFetching:false
     },
 
     //getting states
     getters: {
         getCardVuex: state => {
             return state.cardVuex;
+        },
+        getIsFetching: state => {
+            return state.isFetching;
         }
     },
 
@@ -20,6 +24,9 @@ export default new Vuex.Store({
     mutations: {
         selectCardVuex: (state, selectedCard) => {
             state.cardVuex = selectedCard;
+        },
+        setFetching: (state, isFetching) => {
+            state.isFetching = isFetching;
         }
     },
 

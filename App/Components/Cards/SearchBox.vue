@@ -34,21 +34,25 @@
     },
     methods: {            
             getRandomCard: function(){
+              this.$store.commit('setFetching', true);
               this.searchText = '';
               ApiMethods
                 .getApi('/api/Cards/Random')
                 .then((data) => {
+                    this.$store.commit('setFetching', false);
                     this.$store.commit('selectCardVuex', data);
                 });
             },
             searchCard: function(){
               if(this.searchText!='')
               {
+                this.$store.commit('setFetching', true);
                 ApiMethods
                   .getApi('/api/Cards/ByName/' + this.searchText)
                   .then((data) => {
                     if(data==null)
                       alert('Card not found');
+                    this.$store.commit('setFetching', false);
                     this.$store.commit('selectCardVuex', data);
                   });
               }else{

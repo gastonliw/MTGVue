@@ -26,6 +26,7 @@ const router = new VueRouter({
 })
 
 new Vue({
+  data: { loading: false },
   el: '#app',
   store: Store,
   template: "<div><router-view></router-view></div>",  

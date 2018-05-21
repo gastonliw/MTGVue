@@ -1,4 +1,5 @@
 <template>  
+<div v-if="!isFetching">
   <div v-if="card!=null">
     <div class="card-body">
       <h4 class="card-title">{{card.name}}</h4>
@@ -34,10 +35,16 @@
   <p v-else>
     No card selected
   </p>
+</div>
+<div v-else class="ui clean segment empty-loader">
+    <div class="h-50 col-md-4 offset-md-5 row align-items-center">
+      <i class="fa fa-circle-o-notch fa-spin" style="font-size:80px"></i>
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {        
+    export default {
         computed:{
           splitManaCost: function(){
             //fix regex
@@ -48,11 +55,14 @@
           },
           card(){
             return this.$store.getters.getCardVuex;
+          },
+          isFetching(){
+            return this.$store.getters.getIsFetching;
           }
         },
         filters:{
           truncate(text, top){
-            return text.slice(0, top) + (top < text.length ? '...' : '');
+            return text ? text.slice(0, top) + (top < text.length ? '...' : '') : '';
           }
         }
     };

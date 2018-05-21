@@ -1,5 +1,5 @@
 export default {
-    getApi: (url) => {                
+    getApi: (url) => {        
         return fetch(url, {
             method: 'get'
         }).then(function (response) {            
