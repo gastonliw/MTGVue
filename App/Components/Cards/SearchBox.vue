@@ -1,5 +1,5 @@
 <template>
-  <div class="row">      
+  <div class="row border border-secondary rounded-top border-bottom-0">      
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text" id="cardname">Card name:</span>          

@@ -4,9 +4,8 @@
 </style>
 <template>
 	<div class="container">
-		<loading v-if="$root.loading"></loading>
-  		<router-view v-else></router-view>
-		<div class="card col-xs-4 col-lg-6 col-md-4 offset-md-2 mt-3">
+		
+		<div class="card col-xs-4 col-lg-7 col-md-4 offset-md-3 mt-3">
 			<SearchBox></SearchBox>
 			<Card></Card>
 		</div>

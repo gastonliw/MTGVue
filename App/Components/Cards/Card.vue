@@ -1,23 +1,24 @@
 <template>  
-<div v-if="!isFetching">
-  <div v-if="card!=null">
-    <div class="card-body">
-      <h4 class="card-title">{{card.name}}</h4>
-      <p class="card-text">{{card.type}}</p>
+<div v-if="!isFetching" class="row">
+  <div v-if="card!=null" class="border border-secondary rounded-top col-md-12 col-xs-12">
+    <div class="row">
+      <div class="card-body col-md-12 col-xs-12">
+        <h4 class="card-title">{{card.name}}</h4>
+        <p class="card-text">{{card.type}}</p>
+      </div>
     </div>
     <div class="row mb-2">
-      <div class="col-lg-6">
-        <img v-if="card.imageUrl!=null" class="card-img-bottom" v-bind:src="card.imageUrl" v-bind:alt="card.name">      
-        <p v-else class="border border-dark">
-          No image to display
-        </p>
+      <div class="col-md-4 md-1">
+        <img :src="cardImage" style="max-width:190px" class="card-img-bottom" v-bind:title="card.name" v-bind:alt="card.name">        
       </div>
-      <div class="col-lg-6">
+      <div class="col-md-8">
         <dl>
-          <dt>Mana</dt>          
-          <dl>
-            <i v-for="(cost, index) in splitManaCost" :key="index" v-bind:class="'ms-' + cost" class="ms"></i>
-          </dl>          
+          <template v-if="card.manaCost">
+            <dt>Mana:</dt>          
+            <dl>
+              <i v-for="(cost, index) in splitManaCost" :key="index" v-bind:class="'ms-' + cost" class="ms"></i>
+            </dl>
+          </template>
           <dt>Set:</dt>
           <dl>{{card.setName}}</dl>
           <dt>Rarity:</dt>
@@ -30,13 +31,17 @@
           <dl class="font-bold-light">{{ card.text | truncate(150) }}</dl>
         </dl>
       </div>      
-    </div>  
+    </div>    
   </div>
-  <p v-else>
-    No card selected
-  </p>
+  <div v-else class="border border-secondary rounded-top col-md-12 col-xs-12">
+    <div class="col-md-5 offset-md-1 mb-2 mt-2">
+      <p>
+        No card selected
+      </p>
+    </div>
+  </div>
 </div>
-<div v-else class="ui clean segment empty-loader">
+<div v-else class="ui clean segment empty-loader row border border-secondary rounded-top border-top-0">
     <div class="h-50 col-md-4 offset-md-5 row align-items-center">
       <i class="fa fa-circle-o-notch fa-spin" style="font-size:80px"></i>
     </div>
@@ -58,6 +63,9 @@
           },
           isFetching(){
             return this.$store.getters.getIsFetching;
+          },
+          cardImage(){                   
+            return this.card.imageUrl!=null ? this.card.imageUrl : "images/card.jpg";
           }
         },
         filters:{
