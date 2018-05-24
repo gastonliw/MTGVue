@@ -57,7 +57,7 @@
                   });
               }else{
                 this.searchText='';                
-                this.$store.commit('selectCardVuex', data);
+                this.$store.commit('selectCardVuex', null);
               }
             }
         },
