@@ -4,7 +4,7 @@
 </style>
 <template>
 	<div class="container">		
-		<div class="card col-xs-4 col-lg-7 col-md-4 offset-md-3 mt-3">
+		<div class="card col-xs-4 col-lg-8 col-md-8 offset-md-2 mt-3">
 			<SearchBox></SearchBox>
 			<Card></Card>
 		</div>

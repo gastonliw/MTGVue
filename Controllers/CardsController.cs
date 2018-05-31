@@ -25,6 +25,9 @@ namespace netcore.webapi.Controllers
         [HttpGet("Random")]
         public async Task<IActionResult> GetRandomCardAsync()
         {
+            //move to serviceLayer
+            var gameTypes = _configuration.GetSection("GameTypes").Get<string[]>();
+
             Random random = new Random();
             int randomId = random.Next(1, 4980);
 
@@ -37,7 +40,14 @@ namespace netcore.webapi.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
-                card = JObject.Parse(stringResponse)["card"].ToObject<Card>();
+                card = JObject.Parse(stringResponse)["card"].ToObject<Card>();                
+                //move to serviceLayer
+                if(card.Legalities!=null)
+                {
+                    var cardGameTypes = card.Legalities.Where(le=>le.legality=="Legal").Select(le=>le.format).ToList();
+                    card.GameLegal = gameTypes.Where(gt=>cardGameTypes.Contains(gt)).ToArray();
+                    card.GameIlegal = gameTypes.Where(gt=>!cardGameTypes.Contains(gt)).ToArray();
+                }
                 return Ok(card);
             }
             else
@@ -47,6 +57,9 @@ namespace netcore.webapi.Controllers
         [HttpGet("ByName/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
+            //move to serviceLayer
+            var gameTypes = _configuration.GetSection("GameTypes").Get<string[]>();
+
             var card = new Card();
             var client = new HttpClient();
             var apiUrl = _configuration?.GetSection("MySettings")?.GetSection("ApiURL")?.Value;
@@ -57,8 +70,16 @@ namespace netcore.webapi.Controllers
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
                 if(JObject.Parse(stringResponse)["cards"].Count() > 0)
-                    card = JObject.Parse(stringResponse)["cards"][0].ToObject<Card>();                
-                else
+                {
+                    card = JObject.Parse(stringResponse)["cards"][0].ToObject<Card>();
+                    //move to serviceLayer
+                    if(card.Legalities!=null)
+                    {
+                        var cardGameTypes = card.Legalities.Where(le=>le.legality=="Legal").Select(le=>le.format).ToList();
+                        card.GameLegal = gameTypes.Where(gt=>cardGameTypes.Contains(gt)).ToArray();
+                        card.GameIlegal = gameTypes.Where(gt=>!cardGameTypes.Contains(gt)).ToArray();
+                    }
+                }else
                     return Json(null);
                 return Ok(card);
             }

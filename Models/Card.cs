@@ -31,6 +31,8 @@ namespace netcore.webapi.Models
         public Legality[] Legalities { get; set; }
         public string Id { get; set; }
         public string Flavor { get; set; }
+        public string[] GameLegal {get;set;}        
+        public string[] GameIlegal {get;set;}
         
 
         public class Legality
