@@ -57,31 +57,37 @@ namespace netcore.webapi.Controllers
         [HttpGet("ByName/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
-            //move to serviceLayer
+            //TODO: move to serviceLayer
             var gameTypes = _configuration.GetSection("GameTypes").Get<string[]>();
-
-            var card = new Card();
+            var result = new List<Card>();
             var client = new HttpClient();
             var apiUrl = _configuration?.GetSection("MySettings")?.GetSection("ApiURL")?.Value;
             client.BaseAddress = new Uri(apiUrl);
             client.DefaultRequestHeaders.Accept.Clear();
-            var response = await client.GetAsync("cards?name=" + name);
+            var response = await client.GetAsync("cards?name=" + name);            
             if (response.IsSuccessStatusCode)
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
-                if(JObject.Parse(stringResponse)["cards"].Count() > 0)
-                {
-                    card = JObject.Parse(stringResponse)["cards"][0].ToObject<Card>();
-                    //move to serviceLayer
-                    if(card.Legalities!=null)
+                JObject cardSearch = JObject.Parse(stringResponse);
+                //Serialize
+                IList<JToken> searchResult = cardSearch["cards"].Children().ToList();                
+                if (searchResult.Count() > 0)
+                {                   
+                    foreach(JToken itemCard in searchResult)
                     {
-                        var cardGameTypes = card.Legalities.Where(le=>le.legality=="Legal").Select(le=>le.format).ToList();
-                        card.GameLegal = gameTypes.Where(gt=>cardGameTypes.Contains(gt)).ToArray();
-                        card.GameIlegal = gameTypes.Where(gt=>!cardGameTypes.Contains(gt)).ToArray();
+                        Card card = itemCard.ToObject<Card>();
+                        if(card.Legalities!=null)
+                        {
+                            var cardGameTypes = card.Legalities.Where(le=>le.legality=="Legal").Select(le=>le.format).ToList();
+                            card.GameLegal = gameTypes.Where(gt=>cardGameTypes.Contains(gt)).ToArray();
+                            card.GameIlegal = gameTypes.Where(gt=>!cardGameTypes.Contains(gt)).ToArray();
+                        }
+                        result.Add(card);
                     }
+                    
                 }else
                     return Json(null);
-                return Ok(card);
+                return Ok(result);
             }
             else
                 return NotFound();

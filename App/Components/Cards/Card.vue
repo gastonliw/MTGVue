@@ -1,5 +1,4 @@
 <template>  
-<div v-if="!isFetching" class="row">
   <div v-if="card!=null" class="border border-secondary rounded-top col-md-12 col-xs-12">
     <div class="row">
       <div class="card-body col-md-12 col-xs-12">
@@ -76,12 +75,7 @@
       </p>
     </div>
   </div>
-</div>
-<div v-else class="ui clean segment empty-loader row border border-secondary rounded-top border-top-0">
-    <div class="h-50 col-md-4 offset-md-5 row align-items-center">
-      <i id="imageLoading" class="fa fa-circle-o-notch fa-spin"></i>
-    </div>
-</div>
+
 </template>
 
 <style lang="scss">
@@ -120,16 +114,19 @@
 
 <script>
 export default {
+  props: ['card'],
+  // data: function(){
+  //   return{
+  //     card:{}
+  //   }
+  // },
   computed: {
     splitManaCost: function() {
       //fix regex
       if (this.card.manaCost != null)
         return this.card.manaCost.split(/[{}]/).filter(String);
       else return new Array();
-    },
-    card() {
-      return this.$store.getters.getCardVuex;
-    },
+    },    
     isFetching() {
       return this.$store.getters.getIsFetching;
     },
