@@ -48,7 +48,7 @@ namespace netcore.webapi.Controllers
                     card.GameLegal = gameTypes.Where(gt=>cardGameTypes.Contains(gt)).ToArray();
                     card.GameIlegal = gameTypes.Where(gt=>!cardGameTypes.Contains(gt)).ToArray();
                 }
-                return Ok(card);
+                return Ok(new List<Card> { card });
             }
             else
                 return NotFound();            
