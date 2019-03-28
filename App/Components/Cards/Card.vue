@@ -1,5 +1,5 @@
 <template>  
-  <div v-if="card!=null" class="border border-secondary rounded-top col-md-12 col-xs-12">
+  <div v-if="card!=null" class="border border-secondary rounded-top-0 col-md-12 col-xs-12">
     <div class="row">
       <div class="card-body col-md-12 col-xs-12">
         <h4 class="card-title">{{card.name}}</h4>
@@ -126,7 +126,7 @@ export default {
       if (this.card.manaCost != null)
         return this.card.manaCost.split(/[{}]/).filter(String);
       else return new Array();
-    },    
+    },
     isFetching() {
       return this.$store.getters.getIsFetching;
     },

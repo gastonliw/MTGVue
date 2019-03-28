@@ -1,5 +1,5 @@
 <template>
-  <div class="row border border-secondary rounded-top border-bottom-0">      
+  <div class="row border border-secondary">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text" id="cardname">Card name:</span>          
@@ -33,7 +33,7 @@
       }
     },
     methods: {            
-            getRandomCard: function(){
+            getRandomCard: function(){              
               this.$store.commit('setFetching', true);
               this.searchText = '';
               ApiMethods
@@ -48,16 +48,16 @@
               {
                 this.$store.commit('setFetching', true);
                 ApiMethods
-                  .getApi('/api/Cards/ByName/' + this.searchText)
+                  .getApi('/api/Cards/ListByName/' + this.searchText)
                   .then((data) => {
                     if(data==null)
-                      alert('Card not found');
+                      alert('Card not found');                    
                     this.$store.commit('setFetching', false);
-                    this.$store.commit('selectCardVuex', data);
+                    this.$store.commit('searchCardVuex', data);
                   });
               }else{
                 this.searchText='';                
-                this.$store.commit('selectCardVuex', null);
+                this.$store.commit('searchCardVuex', null);
               }
             }
         },

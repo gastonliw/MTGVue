@@ -92,5 +92,31 @@ namespace netcore.webapi.Controllers
             else
                 return NotFound();
         }
+
+        [HttpGet("ListByName/{name}")]
+        public async Task<IActionResult> ListByName(string name)
+        {
+            //TODO: move to serviceLayer
+            var result = new List<CardRow>();
+            var client = new HttpClient();
+            var apiUrl = _configuration?.GetSection("MySettings")?.GetSection("ApiURL")?.Value;
+            client.BaseAddress = new Uri(apiUrl);
+            client.DefaultRequestHeaders.Accept.Clear();
+            var response = await client.GetAsync("cards?name=" + name);
+            if (response.IsSuccessStatusCode)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();                        
+                JObject cardSearch = JObject.Parse(stringResponse);
+                //Serialize
+                if(JObject.Parse(stringResponse)["cards"].Count() > 0)
+                {
+                    result = cardSearch["cards"].ToObject<List<CardRow>>();                    
+                }else
+                    return Json(null);
+                
+                return Ok(result);
+            }else
+                return NotFound();
+        }
     }
 }

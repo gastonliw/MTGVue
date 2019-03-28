@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         cards() {
-            return this.$store.getters.getCardVuex;
+            return this.$store.getters.getCardsVuex;
         },
         isFetching() {
             return this.$store.getters.getIsFetching;

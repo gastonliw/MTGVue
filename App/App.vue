@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import Cards from './Components/Cards/Cards.vue';	
+	import Cards from './Components/Cards/CardTable.vue';	
 	import SearchBox from './Components/Cards/SearchBox.vue';		
 
     export default {

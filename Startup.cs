@@ -59,8 +59,8 @@ namespace netcore.webapi
 
             app.Run(async (context) =>
             {
-                context.Response.ContentType = "text/html";
-                await context.Response.SendFileAsync(Path.Combine(env.WebRootPath,"index.html"));
+                 context.Response.ContentType = "text/html";
+                 await context.Response.SendFileAsync(Path.Combine(env.WebRootPath,"index.html"));                 
             });
         }
     }
