@@ -1,20 +1,20 @@
 <template>
-  <div class="row border border-secondary">
+  <div class="row border-bottom border-secondary">
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="cardname">Card name:</span>          
+          <span class="input-group-text border-0" id="cardname">Card name:</span>          
         </div>
-        <input @keyup.enter="searchCard" v-model="searchText" type="text" class="form-control" id="cardname" aria-describedby="cardname">
+        <input @keyup.enter="searchCard" v-model="searchText" type="text" class="form-control border-0" id="cardname" aria-describedby="cardname">
         <div class="input-group-append">
-          <span class="input-group-btn">
-            <button v-on:click="searchCard" class="btn btn-outline-secondary" type="button">
+          <span class="input-group-btn border-secondary">
+            <button v-on:click="searchCard" class="btn btn-outline-secondary" type="button" style="border:none">
               <div style="font-size:1.5em;">
                 <i class="fas fa-search"></i>
               </div>
             </button>
           </span>
           <span class="input-group-btn">
-            <button v-on:click="getRandomCard" class="btn btn-outline-secondary" type="button">Random</button>
+            <button v-on:click="getRandomCard" class="btn btn-outline-secondary"  style="border:none" type="button">Random</button>
           </span>
         </div>      
       </div>
